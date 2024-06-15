@@ -14,7 +14,7 @@ from ddim_inversion_utils import *
 from utils import *
 
 class BIRD():
-    def __init__(self, model):
+    def __init__(self, model, on_progress=None):
         self.device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
         self.model = model
 
@@ -27,6 +27,7 @@ class BIRD():
         self.ddim_scheduler = DDIMScheduler(beta_start=self.config.diffusion.beta_start, beta_end=self.config.diffusion.beta_end,
                                        beta_schedule=self.config.diffusion.beta_schedule)
 
+        self.progress_hook = on_progress if on_progress else None
 
     def process(self, task, task_config, img):
         ### Reproducibility
@@ -76,6 +77,7 @@ class BIRD():
                     img = Image.fromarray(np.concatenate(
                         [process(downsampled_torch, 0), process(x_0_hat, 0), np.array(img_pil).astype(np.uint8)],
                         1))
+                if self.progress_hook: self.progress_hook(iteration)
         elif (task == 'non_uniform_deblurring'):
             img = img.resize((self.config.data.image_size, self.config.data.image_size))
             img_np = (np.array(img) / 255.) * 2. - 1.
@@ -107,6 +109,7 @@ class BIRD():
                     img = Image.fromarray(np.concatenate(
                         [process(img_torch.cuda(), 0), process(x_0_hat, 0), np.array(img_pil).astype(np.uint8)],
                         1))
+                if self.progress_hook: self.progress_hook(iteration)
         elif (task == 'denoising'):
             img_pil, img_np = generate_noisy_image(img)
             img_torch = torch.tensor(img_np).permute(2, 0, 1).unsqueeze(0)
@@ -136,6 +139,7 @@ class BIRD():
                     img = Image.fromarray(np.concatenate(
                         [process(img_torch.cuda(), 0), process(x_0_hat, 0), np.array(img_pil).astype(np.uint8)],
                         1))
+                if self.progress_hook: self.progress_hook(iteration)
         elif (task == 'inpainting'):
             img_pil, img_np, mask = generate_noisy_image_and_mask(img)
             img_torch = torch.tensor(img_np).permute(2, 0, 1).unsqueeze(0)
@@ -165,6 +169,7 @@ class BIRD():
                     # print(iteration, 'loss:', loss.item(), torch.norm(latent.detach()), psnr)
                     img = Image.fromarray(np.concatenate([process(img_torch.cuda() * t_mask, 0), process(x_0_hat, 0),
                                                     np.array(img_pil).astype(np.uint8)], 1))
+                if self.progress_hook: self.progress_hook(iteration)
         elif (task == 'super_resolution'):
             img_pil, downsampled_torch, downsampling_op = generate_lr_image(img, task_config['downsampling_ratio'])
             radii = torch.ones([1, 1, 1]).cuda() * (
@@ -193,6 +198,7 @@ class BIRD():
                     img = Image.fromarray(np.concatenate(
                         [process(MeanUpsample(downsampled_torch, task_config['downsampling_ratio']), 0),
                          process(x_0_hat, 0), np.array(img_pil).astype(np.uint8)], 1))
+                if self.progress_hook: self.progress_hook(iteration)
         else:
             pass
 

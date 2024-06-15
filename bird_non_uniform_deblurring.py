@@ -1,3 +1,4 @@
+import torch
 import torchvision.transforms.functional as F
 from comfy.utils import ProgressBar
 from .birdlib.api import BIRD
@@ -27,8 +28,19 @@ class BirdNonUniformDeblurring:
 
     CATEGORY = "NuA/BIRD"
 
+    @torch.inference_mode(False)
     def execute(self, model, image, optimization_steps, lr, delta_t, seed):
-        bird = BIRD(model)
+        pbar = ProgressBar(int(optimization_steps))
+        p = {"prev": 0}
+
+        def prog(i):
+            i = i + 1
+            if i < p["prev"]:
+                p["prev"] = 0
+            pbar.update(i - p["prev"])
+            p["prev"] = i
+
+        bird = BIRD(model, on_progress=prog)
 
         task = "non_uniform_deblurring"
         task_config = {
