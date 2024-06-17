@@ -5,3 +5,4 @@ blobfile
 tqdm
 pyYaml
 pillow
+diffusers

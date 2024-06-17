@@ -67,7 +67,7 @@ class BirdDeblurring:
         )
 
         img = F.to_tensor(img)
-        img = img.permute(1, 2, 0).unsqueeze(0)
+        img = img.permute(1, 2, 0)
+        img = img[None].unsqueeze(0)
 
         return (img)
-

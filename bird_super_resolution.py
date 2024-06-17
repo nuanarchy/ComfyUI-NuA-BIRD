@@ -17,7 +17,7 @@ class BirdSuperResolution:
                 "optimization_steps": ("INT", {"default": 100}),
                 "lr": ("FLOAT", {"default": 0.001, "step": 0.001}),
                 "delta_t": ("INT", {"default": 100}),
-                "downsampling_ratio": ("INT", {"default": 8}),
+                #"upsampling_ratio": ("INT", {"default": 4, "step": 1}),
                 "seed": ("INT", {"default": 0, "min": 0, "max": 0xffffffff}),
             },
         }
@@ -30,7 +30,7 @@ class BirdSuperResolution:
     CATEGORY = "NuA/BIRD"
 
     @torch.inference_mode(False)
-    def execute(self, model, image, optimization_steps, lr, delta_t, downsampling_ratio, seed):
+    def execute(self, model, image, optimization_steps, lr, delta_t, seed):
         pbar = ProgressBar(int(optimization_steps))
         p = {"prev": 0}
 
@@ -48,7 +48,7 @@ class BirdSuperResolution:
             "Optimization_steps": optimization_steps,
             "lr": lr,
             "delta_t": delta_t,
-            "downsampling_ratio": downsampling_ratio,
+            #"upsampling_ratio": upsampling_ratio,
             "seed": seed,
         }
 
@@ -63,7 +63,8 @@ class BirdSuperResolution:
         )
 
         img = F.to_tensor(img)
-        img = img.permute(1, 2, 0).unsqueeze(0)
+        img = img.permute(1, 2, 0)
+        img = img[None].unsqueeze(0)
 
         return (img)
 

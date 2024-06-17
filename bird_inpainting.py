@@ -13,6 +13,7 @@ class BirdInpainting:
             "required": {
                 "model": ("MODEL", {"forceInput": True}),
                 "image": ("IMAGE", {"forceInput": True}),
+                "mask": ("MASK", {"forceInput": True}),
 
                 "optimization_steps": ("INT", {"default": 200}),
                 "lr": ("FLOAT", {"default": 0.01, "step": 0.01}),
@@ -29,7 +30,7 @@ class BirdInpainting:
     CATEGORY = "NuA/BIRD"
 
     @torch.inference_mode(False)
-    def execute(self, model, image, optimization_steps, lr, delta_t, seed):
+    def execute(self, model, image, mask, optimization_steps, lr, delta_t, seed):
         pbar = ProgressBar(int(optimization_steps))
         p = {"prev": 0}
 
@@ -54,14 +55,19 @@ class BirdInpainting:
         img = img.permute(2, 0, 1)
         img = F.to_pil_image(img)
 
+        mask = mask.squeeze(0)
+        mask = F.to_pil_image(mask)
+
         img = bird.process(
             task,
             task_config,
             img,
+            mask,
         )
 
         img = F.to_tensor(img)
-        img = img.permute(1, 2, 0).unsqueeze(0)
+        img = img.permute(1, 2, 0)
+        img = img[None].unsqueeze(0)
 
         return (img)
 
