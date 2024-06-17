@@ -8,10 +8,10 @@ import tqdm
 import torch
 from torch import nn
 from PIL import Image, ImageOps
-from guided_diffusion.models import Model
+from .guided_diffusion.models import Model
 import random
-from ddim_inversion_utils import *
-from utils import *
+from .ddim_inversion_utils import *
+from .utils import *
 
 class BIRD():
     def __init__(self, model, on_progress=None):
