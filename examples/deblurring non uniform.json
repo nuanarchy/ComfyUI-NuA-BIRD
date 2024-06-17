@@ -1,0 +1,339 @@
+{
+  "last_node_id": 66,
+  "last_link_id": 117,
+  "nodes": [
+    {
+      "id": 43,
+      "type": "LoadImage",
+      "pos": [
+        -180,
+        730
+      ],
+      "size": [
+        220,
+        310
+      ],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            113
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "original.png",
+        "image"
+      ]
+    },
+    {
+      "id": 48,
+      "type": "PreviewImage",
+      "pos": [
+        730,
+        570
+      ],
+      "size": [
+        260,
+        290
+      ],
+      "flags": {},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 117
+        }
+      ],
+      "title": "Deblurred",
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 32,
+      "type": "PreviewImage",
+      "pos": [
+        440,
+        570
+      ],
+      "size": [
+        260,
+        290
+      ],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 111
+        }
+      ],
+      "title": "Blurred Image",
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 50,
+      "type": "PreviewImage",
+      "pos": [
+        1020,
+        570
+      ],
+      "size": [
+        260,
+        290
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 113
+        }
+      ],
+      "title": "Original Image",
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 64,
+      "type": "LoadImage",
+      "pos": [
+        -180,
+        380
+      ],
+      "size": [
+        220,
+        310
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            110
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "blurred non uniform.png",
+        "image"
+      ]
+    },
+    {
+      "id": 5,
+      "type": "Bird_Loader_NuA",
+      "pos": [
+        80,
+        200
+      ],
+      "size": {
+        "0": 315,
+        "1": 58
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            115
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Bird_Loader_NuA"
+      },
+      "widgets_values": [
+        "celeba_hq.ckpt"
+      ]
+    },
+    {
+      "id": 25,
+      "type": "ImageScale",
+      "pos": [
+        80,
+        380
+      ],
+      "size": {
+        "0": 315,
+        "1": 130
+      },
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 110
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            111,
+            116
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        256,
+        256,
+        "center"
+      ]
+    },
+    {
+      "id": 66,
+      "type": "Bird_Non_Uniform_Deblurring_NuA",
+      "pos": [
+        430,
+        200
+      ],
+      "size": {
+        "0": 315,
+        "1": 174
+      },
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 115
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 116
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            117
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Bird_Non_Uniform_Deblurring_NuA"
+      },
+      "widgets_values": [
+        25,
+        0.002,
+        100,
+        3872718426,
+        "randomize"
+      ]
+    }
+  ],
+  "links": [
+    [
+      110,
+      64,
+      0,
+      25,
+      0,
+      "IMAGE"
+    ],
+    [
+      111,
+      25,
+      0,
+      32,
+      0,
+      "IMAGE"
+    ],
+    [
+      113,
+      43,
+      0,
+      50,
+      0,
+      "IMAGE"
+    ],
+    [
+      115,
+      5,
+      0,
+      66,
+      0,
+      "MODEL"
+    ],
+    [
+      116,
+      25,
+      0,
+      66,
+      1,
+      "IMAGE"
+    ],
+    [
+      117,
+      66,
+      0,
+      48,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}

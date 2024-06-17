@@ -1,0 +1,301 @@
+{
+  "last_node_id": 77,
+  "last_link_id": 146,
+  "nodes": [
+    {
+      "id": 32,
+      "type": "PreviewImage",
+      "pos": [
+        440,
+        570
+      ],
+      "size": {
+        "0": 260,
+        "1": 290
+      },
+      "flags": {},
+      "order": 4,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 111
+        }
+      ],
+      "title": "LR",
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 5,
+      "type": "Bird_Loader_NuA",
+      "pos": [
+        80,
+        200
+      ],
+      "size": {
+        "0": 315,
+        "1": 58
+      },
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "MODEL",
+          "type": "MODEL",
+          "links": [
+            141
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Bird_Loader_NuA"
+      },
+      "widgets_values": [
+        "celeba_hq.ckpt"
+      ]
+    },
+    {
+      "id": 48,
+      "type": "PreviewImage",
+      "pos": [
+        730,
+        570
+      ],
+      "size": [
+        260,
+        290
+      ],
+      "flags": {},
+      "order": 6,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 143
+        }
+      ],
+      "title": "SR",
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 43,
+      "type": "LoadImage",
+      "pos": [
+        -180,
+        390
+      ],
+      "size": [
+        220,
+        310
+      ],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            136,
+            146
+          ],
+          "shape": 3,
+          "slot_index": 0
+        },
+        {
+          "name": "MASK",
+          "type": "MASK",
+          "links": null,
+          "shape": 3
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "LoadImage"
+      },
+      "widgets_values": [
+        "original.png",
+        "image"
+      ]
+    },
+    {
+      "id": 77,
+      "type": "PreviewImage",
+      "pos": [
+        1020,
+        570
+      ],
+      "size": [
+        260,
+        290
+      ],
+      "flags": {},
+      "order": 3,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "images",
+          "type": "IMAGE",
+          "link": 146
+        }
+      ],
+      "title": "Original Image",
+      "properties": {
+        "Node name for S&R": "PreviewImage"
+      }
+    },
+    {
+      "id": 25,
+      "type": "ImageScale",
+      "pos": [
+        80,
+        380
+      ],
+      "size": {
+        "0": 315,
+        "1": 130
+      },
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 136
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            111,
+            142
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "ImageScale"
+      },
+      "widgets_values": [
+        "lanczos",
+        32,
+        32,
+        "center"
+      ]
+    },
+    {
+      "id": 75,
+      "type": "Bird_Super_Resolution_NuA",
+      "pos": [
+        430,
+        200
+      ],
+      "size": {
+        "0": 315,
+        "1": 174
+      },
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [
+        {
+          "name": "model",
+          "type": "MODEL",
+          "link": 141
+        },
+        {
+          "name": "image",
+          "type": "IMAGE",
+          "link": 142
+        }
+      ],
+      "outputs": [
+        {
+          "name": "IMAGE",
+          "type": "IMAGE",
+          "links": [
+            143
+          ],
+          "shape": 3,
+          "slot_index": 0
+        }
+      ],
+      "properties": {
+        "Node name for S&R": "Bird_Super_Resolution_NuA"
+      },
+      "widgets_values": [
+        100,
+        0.001,
+        100,
+        1475036070,
+        "randomize"
+      ]
+    }
+  ],
+  "links": [
+    [
+      111,
+      25,
+      0,
+      32,
+      0,
+      "IMAGE"
+    ],
+    [
+      136,
+      43,
+      0,
+      25,
+      0,
+      "IMAGE"
+    ],
+    [
+      141,
+      5,
+      0,
+      75,
+      0,
+      "MODEL"
+    ],
+    [
+      142,
+      25,
+      0,
+      75,
+      1,
+      "IMAGE"
+    ],
+    [
+      143,
+      75,
+      0,
+      48,
+      0,
+      "IMAGE"
+    ],
+    [
+      146,
+      43,
+      0,
+      77,
+      0,
+      "IMAGE"
+    ]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {},
+  "version": 0.4
+}
